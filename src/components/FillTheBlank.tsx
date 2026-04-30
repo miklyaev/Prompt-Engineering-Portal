@@ -10,7 +10,7 @@ function cn(...inputs: ClassValue[]) {
 
 interface FillTheBlankProps {
 	question: string;
-	correctAnswer: string;
+	correctAnswer: string | string[];
 	className?: string;
 }
 
@@ -21,7 +21,16 @@ const FillTheBlank: React.FC<FillTheBlankProps> = ({
 }) => {
 	const [userInput, setUserInput] = useState('');
 	const [isSubmitted, setIsSubmitted] = useState(false);
-	const isCorrect = userInput.trim().toLowerCase() === correctAnswer.toLowerCase();
+
+	const checkCorrectness = () => {
+		const input = userInput.trim().toLowerCase();
+		if (Array.isArray(correctAnswer)) {
+			return correctAnswer.some(ans => ans.toLowerCase() === input);
+		}
+		return input === correctAnswer.toLowerCase();
+	};
+
+	const isCorrect = checkCorrectness();
 
 	const parts = question.split('______');
 
@@ -35,6 +44,8 @@ const FillTheBlank: React.FC<FillTheBlankProps> = ({
 		setUserInput('');
 		setIsSubmitted(false);
 	};
+
+	const displayAnswer = Array.isArray(correctAnswer) ? correctAnswer[0] : correctAnswer;
 
 	return (
 		<div className={cn("bg-blue-50 border border-blue-100 rounded-2xl p-6 space-y-4 shadow-sm", className)}>
@@ -55,7 +66,7 @@ const FillTheBlank: React.FC<FillTheBlankProps> = ({
 								isSubmitted && isCorrect && "border-green-500 text-green-600 bg-green-50",
 								isSubmitted && !isCorrect && "border-red-500 text-red-600 bg-red-50"
 							)}
-							style={{ width: `${Math.max(correctAnswer.length + 2, 10)}ch` }}
+							style={{ width: `${Math.max(displayAnswer.length + 2, 10)}ch` }}
 						/>
 					</form>
 					{parts[1]}

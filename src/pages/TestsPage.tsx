@@ -27,53 +27,52 @@ const TestsPage: React.FC = () => {
         />
       </section>
 
-      <section className="space-y-6">
-        <div className="border-l-4 border-blue-500 pl-4">
-          <h2 className="text-2xl font-bold text-gray-800">Простые тесты проверяют запоминание</h2>
+      <section className="bg-white border border-gray-300 rounded-2xl p-8 space-y-8 shadow-sm">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Простые тесты проверяют запоминание</h2>
           <p className="text-gray-500 mt-1">Базовые понятия и определения промпт-инжиниринга.</p>
         </div>
 
-        <div className="grid gap-6">
-          {testsData.simpleTests.map((test) => {
-            if (test.type === 'single-choice') {
-              return (
-                <SingleChoice
-                  key={test.id}
-                  question={test.question}
-                  options={test.options}
-                  correctAnswer={test.correctAnswer!}
-                  className="my-0"
-                />
-              );
-            }
+        <div className="grid gap-6">          {testsData.simpleTests.map((test) => {
+          if (test.type === 'single-choice') {
+            return (
+              <SingleChoice
+                key={test.id}
+                question={test.question}
+                options={test.options}
+                correctAnswer={test.correctAnswer!}
+                className="my-0"
+              />
+            );
+          }
 
-            if (test.type === 'multiple-choice') {
-              return (
-                <MultipleChoice
-                  key={test.id}
-                  question={test.question}
-                  options={test.options}
-                  correctAnswers={test.correctAnswers!}
-                  className="my-0"
-                />
-              );
-            }
+          if (test.type === 'multiple-choice') {
+            return (
+              <MultipleChoice
+                key={test.id}
+                question={test.question}
+                options={test.options}
+                correctAnswers={test.correctAnswers!}
+                className="my-0"
+              />
+            );
+          }
 
-            if (test.type === 'match-pairs') {
-              return (
-                <MatchPairs
-                  key={test.id}
-                  question={test.question}
-                  leftItems={test.leftItems!}
-                  rightItems={test.rightItems!}
-                  correctMapping={test.correctMapping!}
-                  className="my-0"
-                />
-              );
-            }
+          if (test.type === 'match-pairs') {
+            return (
+              <MatchPairs
+                key={test.id}
+                question={test.question}
+                leftItems={test.leftItems!}
+                rightItems={test.rightItems!}
+                correctMapping={test.correctMapping!}
+                className="my-0"
+              />
+            );
+          }
 
-            return null;
-          })}
+          return null;
+        })}
         </div>
       </section>
     </div>

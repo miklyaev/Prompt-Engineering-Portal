@@ -19,6 +19,14 @@ const TestsPage: React.FC = () => {
     }));
   };
 
+  const handleResetAll = () => {
+    setCompletedTests({});
+    // Для полной перезагрузки компонентов тестов можно использовать ключ
+    setResetKey(prev => prev + 1);
+  };
+
+  const [resetKey, setResetKey] = useState(0);
+
   const totalTests = testsData.simpleTests.length + testsData.advancedTests.length;
   const correctCount = Object.values(completedTests).filter(Boolean).length;
 
@@ -26,11 +34,10 @@ const TestsPage: React.FC = () => {
     return tests.map((test, index) => {
       const renderTest = () => {
         const commonProps = {
-          key: test.id,
+          key: `${test.id}-${resetKey}`,
           className: "my-0",
           onComplete: (isCorrect: boolean) => handleTestComplete(test.id, isCorrect)
         };
-
         if (test.type === 'single-choice') {
           return (
             <SingleChoice
@@ -133,14 +140,21 @@ const TestsPage: React.FC = () => {
         </p>
       </header>
 
-      <section className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-        <ProgressBar
-          current={correctCount}
-          total={totalTests}
-          label="Общий прогресс тестов"
-        />
+      <section className="bg-white p-6 rounded-2xl border border-gray-300 shadow-sm relative">
+        <button
+          onClick={handleResetAll}
+          className="absolute top-4 left-6 text-xs text-blue-600 hover:text-blue-800 underline underline-offset-2 focus:outline-none font-medium"
+        >
+          Сбросить все тесты
+        </button>
+        <div className="pt-6">
+          <ProgressBar
+            current={correctCount}
+            total={totalTests}
+            label="Общий прогресс тестов"
+          />
+        </div>
       </section>
-
       <div className="space-y-12">
         <section className="bg-white border border-gray-300 rounded-2xl p-8 space-y-8 shadow-sm">
           <div>

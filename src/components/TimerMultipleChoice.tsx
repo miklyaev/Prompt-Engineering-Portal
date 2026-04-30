@@ -115,10 +115,9 @@ const TimerMultipleChoice: React.FC<TimerMultipleChoiceProps> = ({
 				{!isStarted ? (
 					<div className="py-8 flex flex-col items-center justify-center space-y-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
 						<p className="text-sm text-gray-500 text-center max-w-xs">
-							У вас будет {formatTime(timerSeconds)} на выполнение этого задания.
+							У вас будет {timerSeconds} секунд на выполнение этого задания.
 							Варианты ответов появятся после нажатия кнопки.
-						</p>
-						<button
+						</p>						<button
 							onClick={handleStart}
 							className="flex items-center gap-2 px-8 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all transform hover:scale-105 active:scale-95 shadow-md"
 						>

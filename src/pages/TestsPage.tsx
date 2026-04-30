@@ -4,8 +4,8 @@ import SingleChoice from '../components/SingleChoice';
 import MultipleChoice from '../components/MultipleChoice';
 import MatchPairs from '../components/MatchPairs';
 import FillTheBlank from '../components/FillTheBlank';
-import testsData from '../data/tests.json';
-const TestsPage: React.FC = () => {
+import TrueFalse from '../components/TrueFalse';
+import testsData from '../data/tests.json'; const TestsPage: React.FC = () => {
   // В будущем эти данные будут приходить из состояния приложения или API
   const completedTests = 0;
   const totalTests = 10;
@@ -77,6 +77,18 @@ const TestsPage: React.FC = () => {
                 key={test.id}
                 question={test.question}
                 correctAnswer={test.correctAnswer as string}
+                className="my-0"
+              />
+            );
+          }
+
+          if (test.type === 'true-false') {
+            return (
+              <TrueFalse
+                key={test.id}
+                question={test.question}
+                correctAnswer={test.correctAnswer as boolean}
+                explanation={test.explanation!}
                 className="my-0"
               />
             );

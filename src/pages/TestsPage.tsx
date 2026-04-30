@@ -33,82 +33,95 @@ import testsData from '../data/tests.json'; const TestsPage: React.FC = () => { 
           <p className="text-gray-500 mt-1">Базовые понятия и определения промпт-инжиниринга.</p>
         </div>
 
-        <div className="grid gap-6">          {testsData.simpleTests.map((test) => {
-          if (test.type === 'single-choice') {
-            return (
-              <SingleChoice
-                key={test.id}
-                question={test.question}
-                options={test.options}
-                correctAnswer={test.correctAnswer!}
-                className="my-0"
-              />
-            );
-          }
+        <div className="grid gap-12">
+          {testsData.simpleTests.map((test, index) => {
+            const renderTest = () => {
+              if (test.type === 'single-choice') {
+                return (
+                  <SingleChoice
+                    key={test.id}
+                    question={test.question}
+                    options={test.options}
+                    correctAnswer={test.correctAnswer!}
+                    className="my-0"
+                  />
+                );
+              }
 
-          if (test.type === 'multiple-choice') {
-            return (
-              <MultipleChoice
-                key={test.id}
-                question={test.question}
-                options={test.options}
-                correctAnswers={test.correctAnswers!}
-                className="my-0"
-              />
-            );
-          }
+              if (test.type === 'multiple-choice') {
+                return (
+                  <MultipleChoice
+                    key={test.id}
+                    question={test.question}
+                    options={test.options}
+                    correctAnswers={test.correctAnswers!}
+                    className="my-0"
+                  />
+                );
+              }
 
-          if (test.type === 'match-pairs') {
-            return (
-              <MatchPairs
-                key={test.id}
-                question={test.question}
-                leftItems={test.leftItems!}
-                rightItems={test.rightItems!}
-                correctMapping={test.correctMapping!}
-                className="my-0"
-              />
-            );
-          }
+              if (test.type === 'match-pairs') {
+                return (
+                  <MatchPairs
+                    key={test.id}
+                    question={test.question}
+                    leftItems={test.leftItems!}
+                    rightItems={test.rightItems!}
+                    correctMapping={test.correctMapping!}
+                    className="my-0"
+                  />
+                );
+              }
 
-          if (test.type === 'fill-the-blank') {
-            return (
-              <FillTheBlank
-                key={test.id}
-                question={test.question}
-                correctAnswer={test.correctAnswer as string}
-                className="my-0"
-              />
-            );
-          }
+              if (test.type === 'fill-the-blank') {
+                return (
+                  <FillTheBlank
+                    key={test.id}
+                    question={test.question}
+                    correctAnswer={test.correctAnswer as string}
+                    className="my-0"
+                  />
+                );
+              }
 
-          if (test.type === 'true-false') {
-            return (
-              <TrueFalse
-                key={test.id}
-                question={test.question}
-                correctAnswer={test.correctAnswer as boolean}
-                explanation={test.explanation!}
-                className="my-0"
-              />
-            );
-          }
+              if (test.type === 'true-false') {
+                return (
+                  <TrueFalse
+                    key={test.id}
+                    question={test.question}
+                    correctAnswer={test.correctAnswer as boolean}
+                    explanation={test.explanation!}
+                    className="my-0"
+                  />
+                );
+              }
 
-          if (test.type === 'order-steps') {
+              if (test.type === 'order-steps') {
+                return (
+                  <OrderSteps
+                    key={test.id}
+                    question={test.question}
+                    steps={test.steps!}
+                    correctOrder={test.correctOrder!}
+                    className="my-0"
+                  />
+                );
+              }
+              return null;
+            };
+
             return (
-              <OrderSteps
-                key={test.id}
-                question={test.question}
-                steps={test.steps!}
-                correctOrder={test.correctOrder!}
-                className="my-0"
-              />
+              <div key={test.id} className="space-y-4">
+                <div className="flex justify-center">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-gray-500 bg-gray-100 px-3 py-1 rounded-full border border-gray-200">
+                    Тест {index + 1}
+                  </span>
+                </div>
+                {renderTest()}
+              </div>
             );
-          }
-          return null;
-        })}
-        </div>
-      </section>
+          })}
+        </div>      </section>
     </div>
   );
 };

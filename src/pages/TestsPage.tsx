@@ -6,6 +6,7 @@ import MatchPairs from '../components/MatchPairs';
 import FillTheBlank from '../components/FillTheBlank';
 import TrueFalse from '../components/TrueFalse';
 import OrderSteps from '../components/OrderSteps';
+import TimerMultipleChoice from '../components/TimerMultipleChoice';
 import testsData from '../data/tests.json';
 
 const TestsPage: React.FC = () => {
@@ -92,6 +93,18 @@ const TestsPage: React.FC = () => {
               question={test.question}
               steps={test.steps!}
               correctOrder={test.correctOrder!}
+            />
+          );
+        }
+
+        if (test.type === 'timer-multiple-choice') {
+          return (
+            <TimerMultipleChoice
+              {...commonProps}
+              question={test.question}
+              options={test.options as string[]}
+              correctAnswers={test.correctAnswers!}
+              timerSeconds={test.timerSeconds}
             />
           );
         }

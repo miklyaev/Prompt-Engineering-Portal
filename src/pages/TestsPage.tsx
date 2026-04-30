@@ -3,8 +3,8 @@ import ProgressBar from '../components/ProgressBar';
 import SingleChoice from '../components/SingleChoice';
 import MultipleChoice from '../components/MultipleChoice';
 import MatchPairs from '../components/MatchPairs';
+import FillTheBlank from '../components/FillTheBlank';
 import testsData from '../data/tests.json';
-
 const TestsPage: React.FC = () => {
   // В будущем эти данные будут приходить из состояния приложения или API
   const completedTests = 0;
@@ -71,6 +71,16 @@ const TestsPage: React.FC = () => {
             );
           }
 
+          if (test.type === 'fill-the-blank') {
+            return (
+              <FillTheBlank
+                key={test.id}
+                question={test.question}
+                correctAnswer={test.correctAnswer as string}
+                className="my-0"
+              />
+            );
+          }
           return null;
         })}
         </div>

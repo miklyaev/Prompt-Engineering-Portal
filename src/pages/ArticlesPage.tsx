@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { articles } from '../data/articles';
-import PracticeBlock from '../components/PracticeBlock';
+import SingleChoice from '../components/SingleChoice';
 
 const ArticlesPage: React.FC = () => {
   const { hash } = useLocation();
@@ -46,7 +46,7 @@ const ArticlesPage: React.FC = () => {
               }
               if (section.type === 'practice' && section.question && section.options) {
                 return (
-                  <PracticeBlock
+                  <SingleChoice
                     key={sectionIndex}
                     question={section.question}
                     options={section.options}

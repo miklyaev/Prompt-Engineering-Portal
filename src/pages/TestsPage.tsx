@@ -5,8 +5,8 @@ import MultipleChoice from '../components/MultipleChoice';
 import MatchPairs from '../components/MatchPairs';
 import FillTheBlank from '../components/FillTheBlank';
 import TrueFalse from '../components/TrueFalse';
-import testsData from '../data/tests.json'; const TestsPage: React.FC = () => {
-  // В будущем эти данные будут приходить из состояния приложения или API
+import OrderSteps from '../components/OrderSteps';
+import testsData from '../data/tests.json'; const TestsPage: React.FC = () => {  // В будущем эти данные будут приходить из состояния приложения или API
   const completedTests = 0;
   const totalTests = 10;
 
@@ -89,6 +89,18 @@ import testsData from '../data/tests.json'; const TestsPage: React.FC = () => {
                 question={test.question}
                 correctAnswer={test.correctAnswer as boolean}
                 explanation={test.explanation!}
+                className="my-0"
+              />
+            );
+          }
+
+          if (test.type === 'order-steps') {
+            return (
+              <OrderSteps
+                key={test.id}
+                question={test.question}
+                steps={test.steps!}
+                correctOrder={test.correctOrder!}
                 className="my-0"
               />
             );

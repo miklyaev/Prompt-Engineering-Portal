@@ -1,5 +1,7 @@
 import React from 'react';
 import ProgressBar from '../components/ProgressBar';
+import SingleChoice from '../components/SingleChoice';
+import testsData from '../data/tests.json';
 
 const TestsPage: React.FC = () => {
   // В будущем эти данные будут приходить из состояния приложения или API
@@ -7,7 +9,7 @@ const TestsPage: React.FC = () => {
   const totalTests = 10;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-12">
       <header className="space-y-4">
         <h1 className="text-3xl font-bold text-gray-900">Тестирование</h1>
         <p className="text-gray-600">
@@ -23,12 +25,24 @@ const TestsPage: React.FC = () => {
         />
       </section>
 
-      <div className="grid gap-6">
-        {/* Здесь будут карточки с тестами */}
-        <div className="flex flex-col items-center justify-center py-12 text-center border-2 border-dashed border-gray-200 rounded-2xl">
-          <p className="text-gray-500">Список тестов скоро появится...</p>
+      <section className="space-y-6">
+        <div className="border-l-4 border-blue-500 pl-4">
+          <h2 className="text-2xl font-bold text-gray-800">Простые тесты проверяют запоминание</h2>
+          <p className="text-gray-500 mt-1">Базовые понятия и определения промпт-инжиниринга.</p>
         </div>
-      </div>
+
+        <div className="grid gap-6">
+          {testsData.simpleTests.map((test) => (
+            <SingleChoice
+              key={test.id}
+              question={test.question}
+              options={test.options}
+              correctAnswer={test.correctAnswer}
+              className="my-0"
+            />
+          ))}
+        </div>
+      </section>
     </div>
   );
 };

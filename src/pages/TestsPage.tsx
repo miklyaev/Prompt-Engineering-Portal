@@ -1,19 +1,34 @@
 import React from 'react';
-import { PenTool } from 'lucide-react';
+import ProgressBar from '../components/ProgressBar';
 
 const TestsPage: React.FC = () => {
+  // В будущем эти данные будут приходить из состояния приложения или API
+  const completedTests = 0;
+  const totalTests = 10;
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-4">
-      <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center text-gray-400">
-        <PenTool size={32} />
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+      <header className="space-y-4">
+        <h1 className="text-3xl font-bold text-gray-900">Тестирование</h1>
+        <p className="text-gray-600">
+          Проверьте свои знания в области промпт-инжиниринга. Пройдите все тесты, чтобы закрепить материал.
+        </p>
+      </header>
+
+      <section className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+        <ProgressBar
+          current={completedTests}
+          total={totalTests}
+          label="Общий прогресс тестов"
+        />
+      </section>
+
+      <div className="grid gap-6">
+        {/* Здесь будут карточки с тестами */}
+        <div className="flex flex-col items-center justify-center py-12 text-center border-2 border-dashed border-gray-200 rounded-2xl">
+          <p className="text-gray-500">Список тестов скоро появится...</p>
+        </div>
       </div>
-      <h1 className="text-2xl font-bold text-gray-800">Тесты</h1>
-      <p className="text-gray-500 max-w-sm">
-        Раздел находится в разработке. Скоро здесь появятся интерактивные тесты для проверки знаний.
-      </p>
-      <span className="inline-flex items-center gap-2 bg-amber-50 text-amber-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-amber-200">
-        Скоро
-      </span>
     </div>
   );
 };

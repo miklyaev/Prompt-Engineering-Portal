@@ -1,6 +1,7 @@
 import React from 'react';
 import ProgressBar from '../components/ProgressBar';
 import SingleChoice from '../components/SingleChoice';
+import MultipleChoice from '../components/MultipleChoice';
 import testsData from '../data/tests.json';
 
 const TestsPage: React.FC = () => {
@@ -32,15 +33,33 @@ const TestsPage: React.FC = () => {
         </div>
 
         <div className="grid gap-6">
-          {testsData.simpleTests.map((test) => (
-            <SingleChoice
-              key={test.id}
-              question={test.question}
-              options={test.options}
-              correctAnswer={test.correctAnswer}
-              className="my-0"
-            />
-          ))}
+          {testsData.simpleTests.map((test) => {
+            if (test.type === 'single-choice') {
+              return (
+                <SingleChoice
+                  key={test.id}
+                  question={test.question}
+                  options={test.options}
+                  correctAnswer={test.correctAnswer!}
+                  className="my-0"
+                />
+              );
+            }
+
+            if (test.type === 'multiple-choice') {
+              return (
+                <MultipleChoice
+                  key={test.id}
+                  question={test.question}
+                  options={test.options}
+                  correctAnswers={test.correctAnswers!}
+                  className="my-0"
+                />
+              );
+            }
+
+            return null;
+          })}
         </div>
       </section>
     </div>

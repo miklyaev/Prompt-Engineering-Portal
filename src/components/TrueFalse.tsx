@@ -5,6 +5,7 @@ interface TrueFalseProps {
 	question: string;
 	correctAnswer: boolean;
 	explanation: string;
+	onComplete?: (isCorrect: boolean) => void;
 	className?: string;
 }
 
@@ -12,6 +13,7 @@ const TrueFalse: React.FC<TrueFalseProps> = ({
 	question,
 	correctAnswer,
 	explanation,
+	onComplete,
 	className = "my-8",
 }) => {
 	const [selected, setSelected] = useState<boolean | null>(null);
@@ -21,12 +23,17 @@ const TrueFalse: React.FC<TrueFalseProps> = ({
 	const handleSelect = (value: boolean) => {
 		if (answered) return;
 		setSelected(value);
+		if (onComplete) {
+			onComplete(value === correctAnswer);
+		}
 	};
 
 	const handleReset = () => {
 		setSelected(null);
+		if (onComplete) {
+			onComplete(false);
+		}
 	};
-
 	const handleKeyDown = (event: React.KeyboardEvent, value: boolean) => {
 		if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault();

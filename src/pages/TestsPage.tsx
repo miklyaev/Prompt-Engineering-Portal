@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ProgressBar from '../components/ProgressBar';
 import SingleChoice from '../components/SingleChoice';
 import MultipleChoice from '../components/MultipleChoice';
@@ -6,9 +6,20 @@ import MatchPairs from '../components/MatchPairs';
 import FillTheBlank from '../components/FillTheBlank';
 import TrueFalse from '../components/TrueFalse';
 import OrderSteps from '../components/OrderSteps';
-import testsData from '../data/tests.json'; const TestsPage: React.FC = () => {  // В будущем эти данные будут приходить из состояния приложения или API
-  const completedTests = 0;
-  const totalTests = 10;
+import testsData from '../data/tests.json';
+
+const TestsPage: React.FC = () => {
+  const [completedTests, setCompletedTests] = useState<Record<string, boolean>>({});
+
+  const handleTestComplete = (id: string, isCorrect: boolean) => {
+    setCompletedTests(prev => ({
+      ...prev,
+      [id]: isCorrect
+    }));
+  };
+
+  const totalTests = testsData.simpleTests.length;
+  const correctCount = Object.values(completedTests).filter(Boolean).length;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-12">
@@ -21,7 +32,7 @@ import testsData from '../data/tests.json'; const TestsPage: React.FC = () => { 
 
       <section className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
         <ProgressBar
-          current={completedTests}
+          current={correctCount}
           total={totalTests}
           label="Общий прогресс тестов"
         />
@@ -36,14 +47,19 @@ import testsData from '../data/tests.json'; const TestsPage: React.FC = () => { 
         <div className="grid gap-12">
           {testsData.simpleTests.map((test, index) => {
             const renderTest = () => {
+              const commonProps = {
+                key: test.id,
+                className: "my-0",
+                onComplete: (isCorrect: boolean) => handleTestComplete(test.id, isCorrect)
+              };
+
               if (test.type === 'single-choice') {
                 return (
                   <SingleChoice
-                    key={test.id}
+                    {...commonProps}
                     question={test.question}
-                    options={test.options}
-                    correctAnswer={test.correctAnswer!}
-                    className="my-0"
+                    options={test.options as string[]}
+                    correctAnswer={test.correctAnswer as number}
                   />
                 );
               }
@@ -51,24 +67,21 @@ import testsData from '../data/tests.json'; const TestsPage: React.FC = () => { 
               if (test.type === 'multiple-choice') {
                 return (
                   <MultipleChoice
-                    key={test.id}
+                    {...commonProps}
                     question={test.question}
-                    options={test.options}
+                    options={test.options as string[]}
                     correctAnswers={test.correctAnswers!}
-                    className="my-0"
                   />
                 );
               }
-
               if (test.type === 'match-pairs') {
                 return (
                   <MatchPairs
-                    key={test.id}
+                    {...commonProps}
                     question={test.question}
                     leftItems={test.leftItems!}
                     rightItems={test.rightItems!}
                     correctMapping={test.correctMapping!}
-                    className="my-0"
                   />
                 );
               }
@@ -76,10 +89,9 @@ import testsData from '../data/tests.json'; const TestsPage: React.FC = () => { 
               if (test.type === 'fill-the-blank') {
                 return (
                   <FillTheBlank
-                    key={test.id}
+                    {...commonProps}
                     question={test.question}
                     correctAnswer={test.correctAnswer as string}
-                    className="my-0"
                   />
                 );
               }
@@ -87,11 +99,10 @@ import testsData from '../data/tests.json'; const TestsPage: React.FC = () => { 
               if (test.type === 'true-false') {
                 return (
                   <TrueFalse
-                    key={test.id}
+                    {...commonProps}
                     question={test.question}
                     correctAnswer={test.correctAnswer as boolean}
                     explanation={test.explanation!}
-                    className="my-0"
                   />
                 );
               }
@@ -99,11 +110,10 @@ import testsData from '../data/tests.json'; const TestsPage: React.FC = () => { 
               if (test.type === 'order-steps') {
                 return (
                   <OrderSteps
-                    key={test.id}
+                    {...commonProps}
                     question={test.question}
                     steps={test.steps!}
                     correctOrder={test.correctOrder!}
-                    className="my-0"
                   />
                 );
               }
@@ -121,7 +131,8 @@ import testsData from '../data/tests.json'; const TestsPage: React.FC = () => { 
               </div>
             );
           })}
-        </div>      </section>
+        </div>
+      </section>
     </div>
   );
 };

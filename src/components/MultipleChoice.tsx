@@ -6,6 +6,7 @@ interface MultipleChoiceProps {
   options: string[];
   correctAnswers: number[]; // Массив индексов правильных ответов
   onSelect?: (selected: number[]) => void;
+  onComplete?: (isCorrect: boolean) => void;
   className?: string;
 }
 
@@ -14,6 +15,7 @@ const MultipleChoice: React.FC<MultipleChoiceProps> = ({
   options,
   correctAnswers,
   onSelect,
+  onComplete,
   className = "my-8",
 }) => {
   const [selected, setSelected] = useState<number[]>([]);
@@ -41,6 +43,9 @@ const MultipleChoice: React.FC<MultipleChoiceProps> = ({
       if (onSelect) {
         onSelect(selected);
       }
+      if (onComplete) {
+        onComplete(isCorrect);
+      }
     }
   };
 
@@ -49,6 +54,9 @@ const MultipleChoice: React.FC<MultipleChoiceProps> = ({
     setIsSubmitted(false);
     if (onSelect) {
       onSelect([]);
+    }
+    if (onComplete) {
+      onComplete(false);
     }
   };
 

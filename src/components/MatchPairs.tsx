@@ -11,6 +11,7 @@ interface MatchPairsProps {
   leftItems: Pair[];
   rightItems: Pair[];
   correctMapping: Record<string, string>; // leftId -> rightId
+  onComplete?: (isCorrect: boolean) => void;
   className?: string;
 }
 
@@ -19,6 +20,7 @@ const MatchPairs: React.FC<MatchPairsProps> = ({
   leftItems,
   rightItems,
   correctMapping,
+  onComplete,
   className = "my-8",
 }) => {
   const [selectedLeft, setSelectedLeft] = useState<string | null>(null);
@@ -54,17 +56,23 @@ const MatchPairs: React.FC<MatchPairsProps> = ({
     setSelectedLeft(null);
     setIsSubmitted(false);
     setShuffledRight([...rightItems].sort(() => Math.random() - 0.5));
-  };
-
-  const handleSubmit = () => {
-    if (Object.keys(matches).length === leftItems.length) {
-      setIsSubmitted(true);
+    if (onComplete) {
+      onComplete(false);
     }
   };
 
   const isAllCorrect = Object.entries(matches).every(
     ([leftId, rightId]) => correctMapping[leftId] === rightId
   ) && Object.keys(matches).length === leftItems.length;
+
+  const handleSubmit = () => {
+    if (Object.keys(matches).length === leftItems.length) {
+      setIsSubmitted(true);
+      if (onComplete) {
+        onComplete(isAllCorrect);
+      }
+    }
+  };
 
   return (
     <div className={`${className} bg-blue-50 border border-blue-100 rounded-2xl p-6 space-y-6`}>
@@ -129,12 +137,12 @@ const MatchPairs: React.FC<MatchPairsProps> = ({
                 onClick={() => handleRightClick(item.id)}
                 disabled={isSubmitted}
                 className={`w-full text-left px-4 py-3 rounded-xl border text-sm transition-all duration-200 focus:outline-none ring-offset-2 focus:ring-2 focus:ring-blue-500 ${matchedLeftId
-                    ? isCorrect
-                      ? 'border-green-500 bg-green-50 text-green-800'
-                      : isWrong
-                        ? 'border-red-500 bg-red-50 text-red-800'
-                        : 'border-blue-500 bg-blue-50 text-blue-700'
-                    : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
+                  ? isCorrect
+                    ? 'border-green-500 bg-green-50 text-green-800'
+                    : isWrong
+                      ? 'border-red-500 bg-red-50 text-red-800'
+                      : 'border-blue-500 bg-blue-50 text-blue-700'
+                  : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
                   } ${isSubmitted ? 'cursor-default' : 'cursor-pointer'}`}
               >
                 <div className="flex items-center gap-3">

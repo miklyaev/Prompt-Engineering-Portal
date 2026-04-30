@@ -11,12 +11,14 @@ function cn(...inputs: ClassValue[]) {
 interface FillTheBlankProps {
 	question: string;
 	correctAnswer: string | string[];
+	onComplete?: (isCorrect: boolean) => void;
 	className?: string;
 }
 
 const FillTheBlank: React.FC<FillTheBlankProps> = ({
 	question,
 	correctAnswer,
+	onComplete,
 	className = "my-8",
 }) => {
 	const [userInput, setUserInput] = useState('');
@@ -38,11 +40,17 @@ const FillTheBlank: React.FC<FillTheBlankProps> = ({
 		if (e) e.preventDefault();
 		if (isSubmitted || !userInput.trim()) return;
 		setIsSubmitted(true);
+		if (onComplete) {
+			onComplete(isCorrect);
+		}
 	};
 
 	const handleReset = () => {
 		setUserInput('');
 		setIsSubmitted(false);
+		if (onComplete) {
+			onComplete(false);
+		}
 	};
 
 	const displayAnswer = Array.isArray(correctAnswer) ? correctAnswer[0] : correctAnswer;

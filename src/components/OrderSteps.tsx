@@ -5,6 +5,7 @@ interface OrderStepsProps {
   question: string;
   steps: string[];
   correctOrder: string[];
+  onComplete?: (isCorrect: boolean) => void;
   className?: string;
 }
 
@@ -12,6 +13,7 @@ const OrderSteps: React.FC<OrderStepsProps> = ({
   question,
   steps,
   correctOrder,
+  onComplete,
   className = "my-8",
 }) => {
   const [currentOrder, setCurrentOrder] = useState<string[]>([]);
@@ -39,13 +41,19 @@ const OrderSteps: React.FC<OrderStepsProps> = ({
   const handleReset = () => {
     setCurrentOrder([...steps].sort(() => Math.random() - 0.5));
     setIsSubmitted(false);
-  };
-
-  const handleSubmit = () => {
-    setIsSubmitted(true);
+    if (onComplete) {
+      onComplete(false);
+    }
   };
 
   const isCorrect = JSON.stringify(currentOrder) === JSON.stringify(correctOrder);
+
+  const handleSubmit = () => {
+    setIsSubmitted(true);
+    if (onComplete) {
+      onComplete(isCorrect);
+    }
+  };
 
   return (
     <div className={`${className} bg-blue-50 border border-blue-100 rounded-2xl p-6 space-y-6`}>
@@ -102,9 +110,9 @@ const OrderSteps: React.FC<OrderStepsProps> = ({
                   </div>
                 )}
               </div>
-              
+
               <GripVertical size={20} className="text-gray-300 shrink-0" />
-              
+
               <span className="flex-1 text-sm">{step}</span>
 
               {isStepInCorrectPlace && <CheckCircle size={18} className="text-green-500 shrink-0" />}

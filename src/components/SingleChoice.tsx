@@ -6,6 +6,7 @@ interface SingleChoiceProps {
   options: string[];
   correctAnswer: number;
   onSelect?: (index: number) => void;
+  onComplete?: (isCorrect: boolean) => void;
   className?: string;
 }
 
@@ -14,6 +15,7 @@ const SingleChoice: React.FC<SingleChoiceProps> = ({
   options,
   correctAnswer,
   onSelect,
+  onComplete,
   className = "my-8",
 }) => {
   const [selected, setSelected] = useState<number | null>(null);
@@ -23,13 +25,23 @@ const SingleChoice: React.FC<SingleChoiceProps> = ({
   const handleSelect = (index: number) => {
     if (answered) return;
     setSelected(index);
+
+    const correct = index === correctAnswer;
+
     if (onSelect) {
       onSelect(index);
+    }
+
+    if (onComplete) {
+      onComplete(correct);
     }
   };
 
   const handleReset = () => {
     setSelected(null);
+    if (onComplete) {
+      onComplete(false);
+    }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent, index: number) => {

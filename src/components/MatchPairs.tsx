@@ -79,25 +79,41 @@ const MatchPairs: React.FC<MatchPairsProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
         {/* Левая колонка */}
         <div className="space-y-3">
-          {leftItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => handleLeftClick(item.id)}
-              disabled={isSubmitted}
-              className={`w-full text-left px-4 py-3 rounded-xl border text-sm transition-all duration-200 focus:outline-none ring-offset-2 focus:ring-2 focus:ring-blue-500 ${
-                selectedLeft === item.id 
-                  ? 'border-blue-500 bg-blue-100 text-blue-700 shadow-sm' 
-                  : matches[item.id]
-                    ? 'border-green-200 bg-green-50 text-green-700'
-                    : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
-              } ${isSubmitted ? 'cursor-default' : 'cursor-pointer'}`}
-            >
-              <div className="flex items-center justify-between">
-                <span>{item.text}</span>
-                {matches[item.id] && !isSubmitted && <div className="w-2 h-2 rounded-full bg-green-500" />}
-              </div>
-            </button>
-          ))}
+          {leftItems.map((item) => {
+            const matchedRightId = matches[item.id];
+            const isCorrect = isSubmitted && matchedRightId && correctMapping[item.id] === matchedRightId;
+            const isWrong = isSubmitted && matchedRightId && correctMapping[item.id] !== matchedRightId;
+
+            let stateStyle = 'border-gray-200 bg-white text-gray-700 hover:border-blue-300';
+
+            if (selectedLeft === item.id) {
+              stateStyle = 'border-blue-500 bg-blue-100 text-blue-700 shadow-sm';
+            } else if (isSubmitted) {
+              if (isCorrect) {
+                stateStyle = 'border-green-500 bg-green-50 text-green-800';
+              } else if (isWrong) {
+                stateStyle = 'border-red-500 bg-red-50 text-red-800';
+              }
+            } else if (matchedRightId) {
+              stateStyle = 'border-green-200 bg-green-50 text-green-700';
+            }
+
+            return (
+              <button
+                key={item.id}
+                onClick={() => handleLeftClick(item.id)}
+                disabled={isSubmitted}
+                className={`w-full text-left px-4 py-3 rounded-xl border text-sm transition-all duration-200 focus:outline-none ring-offset-2 focus:ring-2 focus:ring-blue-500 ${stateStyle} ${isSubmitted ? 'cursor-default' : 'cursor-pointer'}`}
+              >
+                <div className="flex items-center justify-between">
+                  <span>{item.text}</span>
+                  {matchedRightId && !isSubmitted && <div className="w-2 h-2 rounded-full bg-green-500" />}
+                  {isCorrect && <CheckCircle size={16} className="text-green-500 shrink-0" />}
+                  {isWrong && <XCircle size={16} className="text-red-500 shrink-0" />}
+                </div>
+              </button>
+            );
+          })}
         </div>
 
         {/* Правая колонка */}
@@ -112,15 +128,14 @@ const MatchPairs: React.FC<MatchPairsProps> = ({
                 key={item.id}
                 onClick={() => handleRightClick(item.id)}
                 disabled={isSubmitted}
-                className={`w-full text-left px-4 py-3 rounded-xl border text-sm transition-all duration-200 focus:outline-none ring-offset-2 focus:ring-2 focus:ring-blue-500 ${
-                  matchedLeftId 
-                    ? isCorrect 
-                      ? 'border-green-500 bg-green-50 text-green-800' 
-                      : isWrong 
+                className={`w-full text-left px-4 py-3 rounded-xl border text-sm transition-all duration-200 focus:outline-none ring-offset-2 focus:ring-2 focus:ring-blue-500 ${matchedLeftId
+                    ? isCorrect
+                      ? 'border-green-500 bg-green-50 text-green-800'
+                      : isWrong
                         ? 'border-red-500 bg-red-50 text-red-800'
                         : 'border-blue-500 bg-blue-50 text-blue-700'
                     : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
-                } ${isSubmitted ? 'cursor-default' : 'cursor-pointer'}`}
+                  } ${isSubmitted ? 'cursor-default' : 'cursor-pointer'}`}
               >
                 <div className="flex items-center gap-3">
                   <span className="flex-1">{item.text}</span>

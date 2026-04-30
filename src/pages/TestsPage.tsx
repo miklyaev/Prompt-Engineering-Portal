@@ -2,6 +2,7 @@ import React from 'react';
 import ProgressBar from '../components/ProgressBar';
 import SingleChoice from '../components/SingleChoice';
 import MultipleChoice from '../components/MultipleChoice';
+import MatchPairs from '../components/MatchPairs';
 import testsData from '../data/tests.json';
 
 const TestsPage: React.FC = () => {
@@ -53,6 +54,19 @@ const TestsPage: React.FC = () => {
                   question={test.question}
                   options={test.options}
                   correctAnswers={test.correctAnswers!}
+                  className="my-0"
+                />
+              );
+            }
+
+            if (test.type === 'match-pairs') {
+              return (
+                <MatchPairs
+                  key={test.id}
+                  question={test.question}
+                  leftItems={test.leftItems!}
+                  rightItems={test.rightItems!}
+                  correctMapping={test.correctMapping!}
                   className="my-0"
                 />
               );
